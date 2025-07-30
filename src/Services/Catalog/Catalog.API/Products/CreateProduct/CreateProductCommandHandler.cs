@@ -1,6 +1,9 @@
 ﻿using Catalog.API.Models;
 using Common.CQRS;
 using FluentValidation;
+using Marten;
+using System.ComponentModel;
+using System.Linq.Expressions;
 
 namespace Catalog.API.Products.CreateProduct
 {
@@ -37,7 +40,7 @@ namespace Catalog.API.Products.CreateProduct
                 ImageFile = command.ImageFile,
                 Price = command.Price
             };
-
+           
             //save to database
             session.Store(product);
             await session.SaveChangesAsync(cancellationToken);
