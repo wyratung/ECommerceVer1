@@ -15,5 +15,6 @@ builder.Services.AddMarten(opts =>
 }).UseLightweightSessions();
 var app = builder.Build();
 
+app.MapCarter();
 
 app.Run();
