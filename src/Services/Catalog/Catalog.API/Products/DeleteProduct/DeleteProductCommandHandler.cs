@@ -1,24 +1,30 @@
-﻿namespace Catalog.API.Products.DeleteProduct
+﻿using Catalog.API.Models;
+using Common.CQRS;
+using FluentValidation;
+
+namespace Catalog.API.Products.DeleteProduct
 {
-    public record DeleteProductResponse(bool IsSuccess);
-    public class DeleteProductCommandHandler : ICarterModule
+    public record DeleteProductCommand(Guid Id) : ICommand<DeleteProductResult>;
+    public record DeleteProductResult(bool IsSuccess);
+
+    public class DeleteProductCommandValidator : AbstractValidator<DeleteProductCommand>
     {
-        public void AddRoutes(IEndpointRouteBuilder app)
+        public DeleteProductCommandValidator()
         {
-            app.MapDelete("/products/{id}", async (Guid id, ISender sender) =>
-            {
-                var result = await sender.Send(new DeleteProductCommand(id));
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Product ID is required");
+        }
+    }
 
-                var response = result.Adapt<DeleteProductResponse>();
+    internal class DeleteProductCommandHandler
+        (IDocumentSession session)
+        : ICommandHandler<DeleteProductCommand, DeleteProductResult>
+    {
+        public async Task<DeleteProductResult> Handle(DeleteProductCommand command, CancellationToken cancellationToken)
+        {
+            session.Delete<Product>(command.Id);
+            await session.SaveChangesAsync(cancellationToken);
 
-                return Results.Ok(response);
-            })
-            .WithName("DeleteProduct")
-            .Produces<DeleteProductResponse>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithSummary("Delete Product")
-            .WithDescription("Delete Product");
+            return new DeleteProductResult(true);
         }
     }
 }
