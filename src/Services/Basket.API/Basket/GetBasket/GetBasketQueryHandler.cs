@@ -12,6 +12,8 @@ namespace Basket.API.Basket.GetBasket
     {
         public async Task<GetBasketResult> Handle(GetBasketQuery query, CancellationToken cancellationToken)
         {
+            var x = new Int128();
+            x.Equals(0);
             var basket = await repository.GetBasket(query.UserName);
 
             return new GetBasketResult(basket);

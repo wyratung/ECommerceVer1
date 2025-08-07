@@ -1,4 +1,6 @@
-﻿using Carter;
+﻿using Basket.API.DTOs;
+using Carter;
+using Mapster;
 using MediatR;
 
 namespace Basket.API.Basket.CheckoutBasket
