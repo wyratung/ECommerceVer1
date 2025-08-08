@@ -1,11 +1,14 @@
 using Catalog.API.Data;
 using Common.Behaviors;
 using Common.Exceptions.Handler;
+using Common.Logging;
 using HealthChecks.UI.Client;
 using Marten;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog(SeriLogger.Configure);
 var assembly = typeof(Program).Assembly;
 builder.Services.AddMediatR(config =>
 {

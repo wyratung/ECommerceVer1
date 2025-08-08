@@ -1,9 +1,11 @@
+using Common.Logging;
 using Discount.Grpc.Data;
 using Discount.Grpc.Services;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Host.UseSerilog(SeriLogger.Configure);
 // Add services to the container.
 builder.Services.AddGrpc();
 builder.Services.AddDbContext<DiscountContext>(opts =>
