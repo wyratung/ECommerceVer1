@@ -1,4 +1,6 @@
 services:
+  productdb:
+    image: mysql:8.0.29
   catalogdb:
     image: postgres
 
@@ -15,4 +17,14 @@ services:
     build:
       context: .
       dockerfile: Services/Basket.API/Dockerfile
-
+  product.api:
+    image: ${DOCKER_REGISTRY-}product.api:${PLATFORM:-linux}-${TAG-lastest}
+    build:
+      context: .
+      dockerfile: Services/Product.API/Dockerfile
+  # Volume section
+volumes:
+  sqlserver_data:
+    name: sqlserver_data
+  mysql_data:
+    name: mysql_data
