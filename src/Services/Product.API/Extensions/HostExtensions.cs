@@ -1,4 +1,6 @@
-﻿namespace Product.API.Extensions
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Product.API.Extensions
 {
     public static class HostExtensions
     {

@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Product.API.Persistence;
-
+using Product.API.Repositories;
+using AutoMapper;
 namespace Product.API.Extensions
 {
     public static class ServiceExtensions
@@ -24,7 +25,7 @@ namespace Product.API.Extensions
             services.ConfigureProductDbContext(configuration);
             services.AddInfrastructureServices();
 
-            services.AddAutoMapper([typeof(MappingProfile)]);
+            //services.AddAutoMapper([typeof(MappingProfile)]);
             //services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile())); // or use this way
 
             return services;

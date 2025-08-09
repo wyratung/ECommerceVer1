@@ -1,5 +1,6 @@
 ﻿using Common.Contracts.Interfaces;
 using Common.Infas.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Product.API.Entities;
 using Product.API.Persistence;
 
