@@ -26,7 +26,7 @@ namespace Product.API.Extensions
             services.AddInfrastructureServices();
 
             //services.AddAutoMapper([typeof(MappingProfile)]);
-            //services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile())); // or use this way
+            services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile())); // or use this way
 
             return services;
         }

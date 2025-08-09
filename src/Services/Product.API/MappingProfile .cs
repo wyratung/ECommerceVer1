@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Common.Shared.DTOs.Product;
 using Product.API.Entities;
-
+using Common.Infas.Mappings;
 namespace Product.API
 {
     public class MappingProfile : Profile
