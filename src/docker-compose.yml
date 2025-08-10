@@ -23,6 +23,12 @@ services:
       context: .
       dockerfile: Services/Product.API/Dockerfile
   # Volume section
+  customer.api:
+    image: ${DOCKER_REGISTRY-}customerapi
+    build:
+      context: .
+      dockerfile: Services/Customer.API/Dockerfile
+
 volumes:
   sqlserver_data:
     name: sqlserver_data
