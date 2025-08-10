@@ -1,52 +1,60 @@
-using Basket.API.Data;
-using Basket.API.Models;
-using Carter;
-using Common.Behaviors;
-using Common.Exceptions.Handler;
+using Basket.API;
+using Basket.API.Extensions;
 using Common.Logging;
-using HealthChecks.UI.Client;
-using Marten;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Host.UseSerilog(SeriLogger.Configure);
-var assembly = typeof(Program).Assembly;
-builder.Services.AddCarter();
-builder.Services.AddMediatR(config =>
+
+Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateBootstrapLogger();
+
+Log.Information($"Stating Inventory {builder.Environment.ApplicationName}");
+try
 {
-    config.RegisterServicesFromAssembly(assembly);
-    config.AddOpenBehavior(typeof(ValidationBehavior<,>));
-    config.AddOpenBehavior(typeof(LoggingBehavior<,>));
-});
+    builder.Host.UseSerilog(SeriLogger.Configure);
+    builder.AddAppConfiguration();
+    //builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
 
-//Data Services
-builder.Services.AddMarten(opts =>
-{
-    opts.Connection(builder.Configuration.GetConnectionString("Database")!);
-    opts.Schema.For<ShoppingCart>().Identity(x => x.UserName);
-}).UseLightweightSessions();
-
-builder.Services.AddMarten(opts =>
-{
-    opts.Connection(builder.Configuration.GetConnectionString("Database")!);
-    opts.Schema.For<ShoppingCart>().Identity(x => x.UserName);
-}).UseLightweightSessions();
-
-builder.Services.AddScoped<IBasketRepository, BasketRepository>();
-builder.Services.Decorate<IBasketRepository, CachedBasketRepository>();
-
-
-builder.Services.AddExceptionHandler<CustomExceptionHandler>();
-
-builder.Services.AddHealthChecks()
-    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
-
-var app = builder.Build();
-app.UseHealthChecks("/health",
-    new HealthCheckOptions
+    // Add services to the container.
+    builder.Services.ConfigueRedis();
+    builder.Services.Configure<RouteOptions>(option =>
     {
-        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+        option.LowercaseUrls = true;
     });
 
-app.Run();
+    // Configure MassTransit
+    //builder.Services.ConfigureMassTransit();
+
+    builder.Services.AddInfrastructures(builder.Configuration);
+    builder.Services.AddControllers();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
+
+    var app = builder.Build();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{builder.Environment.ApplicationName} v1");
+        });
+    }
+
+    //app.UseHttpsRedirection(); // Only in production
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.Run();
+}
+catch (Exception err)
+{
+    Log.Fatal(err, "Unhandled exception");
+}
+finally
+{
+    Log.Information("Shutdown Basket API complete");
+    Log.CloseAndFlush();
+}

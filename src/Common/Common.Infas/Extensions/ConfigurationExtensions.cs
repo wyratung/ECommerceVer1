@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Common.Infas.Extensions
             var configuration = serviceProvider.GetRequiredService<IConfiguration>();
             var section = configuration.GetSection(sectionName);
             var options = new T();
-            section.Bind(options);
+            //section.Bind(options);
             return options;
         }
     }

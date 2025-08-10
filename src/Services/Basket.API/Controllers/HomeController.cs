@@ -1,4 +1,6 @@
-﻿namespace Basket.API.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace Basket.API.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
     [Route("/")]
