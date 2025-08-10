@@ -32,6 +32,7 @@ namespace Customer.API.APIs
 
         private static async Task<IResult> GetCustomerByUserNameAsync(string customerName, ICustomerRepository customerService)
         {
+            
             return await customerService.GetCustomerByUserNameAsync(customerName);
         }
 
