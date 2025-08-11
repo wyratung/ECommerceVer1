@@ -1,4 +1,7 @@
 ﻿using MediatR;
+using Ordering.Domain;
+using Ordering.Domain.NewFolder;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,6 @@
-﻿using Common.Contracts.Interfaces;
+﻿using Common.Contracts.Events;
+using Common.Contracts.Interfaces;
+using Common.Infas.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -9,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Serilog;
 using System.Threading.Tasks;
 
 namespace Ordering.Infastructure.Persistence
@@ -16,9 +19,9 @@ namespace Ordering.Infastructure.Persistence
     public class OrderContext : DbContext
     {
         private readonly IMediator _mediator;
-        private readonly ILogger _logger;
+        private readonly Serilog.ILogger _logger;
 
-        public OrderContext(DbContextOptions<OrderContext> options, IMediator mediator, ILogger logger) : base(options)
+        public OrderContext(DbContextOptions<OrderContext> options, IMediator mediator, Serilog.ILogger logger) : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -62,33 +65,33 @@ namespace Ordering.Infastructure.Persistence
                 }
             }
 
-            //SetBaseEventsBeforeSaveChanges();
+            SetBaseEventsBeforeSaveChanges();
 
             var result = await base.SaveChangesAsync(cancellationToken);
-            //await _mediator.DispatchDomainEventsAsync(_baseEvents, _logger);
+            await _mediator.DispatchDomainEventsAsync(_baseEvents, _logger);
             return result;
         }
 
-        //private List<BaseEvent> _baseEvents = [];
-        //private void SetBaseEventsBeforeSaveChanges()
-        //{
-        //    // Get all of entity implement interface IEventEntity
-        //    var domainEntities = ChangeTracker.Entries<IEventEntity>()
-        //        .Select(e => e.Entity)
-        //        .Where(x => x.DomainEvents().Any())
-        //        .ToList();
+        private List<BaseEvent> _baseEvents = [];
+        private void SetBaseEventsBeforeSaveChanges()
+        {
+            // Get all of entity implement interface IEventEntity
+            var domainEntities = ChangeTracker.Entries<IEventEntity>()
+                .Select(e => e.Entity)
+                .Where(x => x.DomainEvents().Any())
+                .ToList();
 
-        //    // Get all of domain events
-        //    var domainEvents = domainEntities
-        //        .SelectMany(x => x.DomainEvents())
-        //        .ToList();
+            // Get all of domain events
+            var domainEvents = domainEntities
+                .SelectMany(x => x.DomainEvents())
+                .ToList();
 
-        //    _baseEvents.AddRange(domainEvents);
+            _baseEvents.AddRange(domainEvents);
 
-        //    foreach (var domainEntity in domainEntities)
-        //    {
-        //        domainEntity.ClearDomainEvent();
-        //    }
-        //}
+            foreach (var domainEntity in domainEntities)
+            {
+                domainEntity.ClearDomainEvent();
+            }
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Ordering.Domain.Enum;
+﻿using Common.Contracts.Events;
+using Ordering.Domain.Enum;
+using Ordering.Domain.NewFolder;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -44,17 +46,17 @@ namespace Ordering.Domain.Entities
         [Required]
         public EOrderStatus Status { get; set; }
 
-        //public OrderEntity AddedOrder()
-        //{
-        //    AddDomainEvent(new OrderCreatedEvent(Id, UserName, DocumentNo.ToString(),
-        //        TotalPrice, EmailAddress, ShippingAddress, InvoiceAddress));
-        //    return this;
-        //}
+        public OrderEntity AddedOrder()
+        {
+            AddDomainEvent(new OrderCreatedEvent(Id, UserName, DocumentNo.ToString(),
+                TotalPrice, EmailAddress, ShippingAddress, InvoiceAddress));
+            return this;
+        }
 
-        //public OrderEntity DeletedOrder()
-        //{
-        //    AddDomainEvent(new OrderDeletedEvent(Id));
-        //    return this;
-        //}
+        public OrderEntity DeletedOrder()
+        {
+            AddDomainEvent(new OrderDeletedEvent(Id));
+            return this;
+        }
     }
 }
