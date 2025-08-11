@@ -7,15 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Exceptions\" />
-    <Folder Include="Common\Behaviors\" />
-    <Folder Include="Common\Interfaces\" />
-    <Folder Include="Common\Models\" />
-    <Folder Include="Common\Mappings\" />
-    <Folder Include="Features\V1\Command\CreateOrder\" />
-    <Folder Include="Features\V1\Command\DeleteOrder\" />
-    <Folder Include="Features\V1\Command\UpdateOrder\" />
-    <Folder Include="Features\V1\Queries\" />
+    <PackageReference Include="AutoMapper" Version="15.0.1" />
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="MediatR" Version="13.0.0" />
+    <PackageReference Include="Serilog" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Common.Contracts\Common.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Common\Common.Infas\Common.Infas.csproj" />
+    <ProjectReference Include="..\..\..\Common\Common.Shared\Common.Shared.csproj" />
+    <ProjectReference Include="..\Ordering.Domain\Ordering.Domain.csproj" />
   </ItemGroup>
 
 </Project>

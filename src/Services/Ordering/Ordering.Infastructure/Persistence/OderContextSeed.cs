@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Ordering.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Ordering.Infastructure.Persistence
 {
-    public class OderContextSeed(ILogger logger, OrderContext context)
+    public class OderContextSeed(Serilog.ILogger logger, OrderContext context)
     {
         public async Task InitializeAsync()
         {

@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using Ordering.Application.Common.Interfaces;
 using Ordering.Domain.Entities;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +19,13 @@ namespace Ordering.Application.Features.V1.Command.CreateOrder
         private readonly IOrderRepository _repository;
         private readonly IValidator<CreateOrderCommand> _validator;
         private readonly IMapper _mapper;
-        private readonly ILogger _logger;
+        private readonly Serilog.ILogger _logger;
 
         public CreateOrderCommandHandler(
             IOrderRepository repository,
             IValidator<CreateOrderCommand> validator,
             IMapper mapper,
-            ILogger logger)
+            Serilog.ILogger logger)
         {
             _repository = repository;
             _validator = validator;

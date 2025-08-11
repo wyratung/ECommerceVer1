@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Common.Infas.Mappings;
 using Common.Shared.SeedWork;
 using MediatR;
 using Ordering.Application.Common.Mappings;
 using Ordering.Application.Features.V1.Command.CreateOrder;
 using Ordering.Domain.Entities;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

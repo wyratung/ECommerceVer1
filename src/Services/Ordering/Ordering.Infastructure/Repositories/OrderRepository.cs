@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
+using Ordering.Infastructure.Persistence;
+using Common.Contracts.Interfaces;
+using Ordering.Application.Common.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ordering.Infastructure.Repositories
 {

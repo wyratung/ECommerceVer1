@@ -1,5 +1,9 @@
+using Common.Contracts.Interfaces;
+using Common.Infas.Repositories;
 using Common.Logging;
 using Ordering.API.Extensions;
+using Ordering.Infastructure;
+using Ordering.Infastructure.Persistence;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +22,7 @@ try
     builder.Services.AddConfigurationSettings(builder.Configuration);
     builder.Services.AddInfrastructureServices(builder.Configuration);
     builder.Services.AddApplicationServices();
-    builder.Services.ConfigureMassTransit();
+    //builder.Services.ConfigureMassTransit();
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -28,7 +32,7 @@ try
     builder.Services.AddScoped<IOrderRepository, OrderRepository>();
     builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
-    builder.Services.AddScoped<ISmtpEmailService, SmtpEmailService>();
+    //builder.Services.AddScoped<ISmtpEmailService, SmtpEmailService>();
 
     var app = builder.Build();
 
