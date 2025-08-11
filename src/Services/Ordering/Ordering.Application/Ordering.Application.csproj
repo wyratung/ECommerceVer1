@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\Exceptions\" />
+    <Folder Include="Common\Behaviors\" />
+    <Folder Include="Common\Interfaces\" />
+    <Folder Include="Common\Models\" />
+    <Folder Include="Common\Mappings\" />
+    <Folder Include="Features\V1\Command\CreateOrder\" />
+    <Folder Include="Features\V1\Command\DeleteOrder\" />
+    <Folder Include="Features\V1\Command\UpdateOrder\" />
+    <Folder Include="Features\V1\Queries\" />
+  </ItemGroup>
+
 </Project>
