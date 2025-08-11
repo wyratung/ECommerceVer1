@@ -12,7 +12,7 @@ try
 {
     builder.Host.UseSerilog(SeriLogger.Configure);
     builder.AddAppConfiguration();
-    //builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
+    builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
 
     // Add services to the container.
     builder.Services.ConfigueRedis();
@@ -22,7 +22,7 @@ try
     });
 
     // Configure MassTransit
-    //builder.Services.ConfigureMassTransit();
+    builder.Services.ConfigureMassTransit();
 
     builder.Services.AddInfrastructures(builder.Configuration);
     builder.Services.AddControllers();

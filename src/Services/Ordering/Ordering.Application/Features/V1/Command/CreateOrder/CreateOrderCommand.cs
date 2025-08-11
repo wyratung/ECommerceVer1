@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Common.EvenBus.IntergationEvents.Events;
+using Common.Infas.Mappings;
 using Common.Shared.SeedWork;
 using MediatR;
 using Ordering.Application.Common.Mappings;

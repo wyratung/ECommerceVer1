@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Common.Contracts\Common.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Common\Common.EvenBus\Common.EvenBus.csproj" />
     <ProjectReference Include="..\..\..\Common\Common.Infas\Common.Infas.csproj" />
     <ProjectReference Include="..\..\..\Common\Common.Shared\Common.Shared.csproj" />
     <ProjectReference Include="..\Ordering.Domain\Ordering.Domain.csproj" />

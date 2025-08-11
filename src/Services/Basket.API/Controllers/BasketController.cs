@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Basket.API.Models;
 using Basket.API.Repositories;
+using Common.EvenBus.IntergationEvents.Events;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using System.ComponentModel.DataAnnotations;
@@ -12,6 +14,7 @@ namespace Basket.API.Controllers
     [ApiController]
     public class BasketController(
     IBasketRepository basketRepository,
+    IPublishEndpoint publishEndpoint,
     IMapper mapper)
     : ControllerBase
     {
@@ -56,9 +59,9 @@ namespace Basket.API.Controllers
                 return NotFound();
 
             //// publish event checkout to event bus
-            //var eventMessage = mapper.Map<BasketCheckoutEvent>(basketCheckout);
-            //eventMessage.TotalPrice = basket.TotalPrice;
-            //await publishEndpoint.Publish(eventMessage);
+            var eventMessage = mapper.Map<BasketCheckoutEvent>(basketCheckout);
+            eventMessage.TotalPrice = basket.TotalPrice;
+            await publishEndpoint.Publish(eventMessage);
 
             // remove basket after send message
             await basketRepository.DeleteBasketFromUserName(basketCheckout.UserName);

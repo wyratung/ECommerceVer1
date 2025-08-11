@@ -2,8 +2,11 @@ using Common.Contracts.Interfaces;
 using Common.Infas.Repositories;
 using Common.Logging;
 using Ordering.API.Extensions;
+using Ordering.Application;
+using Ordering.Application.Common.Interfaces;
 using Ordering.Infastructure;
 using Ordering.Infastructure.Persistence;
+using Ordering.Infastructure.Repositories;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

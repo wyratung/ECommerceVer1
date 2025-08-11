@@ -1,8 +1,10 @@
 ﻿using Basket.API.Repositories;
 using Common.Contracts.Interfaces;
+using Common.EvenBus.IntergationEvents.Interfaces;
+using Common.Infas.Extensions;
 using Common.Infas.Repositories;
 using Common.Shared.Configurations;
-using Common.Infas.Extensions;
+using MassTransit;
 namespace Basket.API.Extensions
 {
     public static class ServiceExtensions
@@ -22,6 +24,24 @@ namespace Basket.API.Extensions
 
             services.AddStackExchangeRedisCache(opt => opt.Configuration = cacheSettings.ConnectionString);
             return services;
-        }        
+        }
+        internal static IServiceCollection ConfigureMassTransit(this IServiceCollection services)
+        {
+            var eventBusSettings = services.GetOptions<EventBusSettings>(EventBusSettings.Position);
+            var mqConnection = new Uri(eventBusSettings.HostAddress);
+            services.AddSingleton(KebabCaseEndpointNameFormatter.Instance);
+            services.AddMassTransit(config =>
+            {
+                config.UsingRabbitMq((ctx, cfg) =>
+                {
+                    cfg.Host(mqConnection);
+                });
+
+                //Publish submit order message
+                config.AddRequestClient<IBasketCheckoutEvent>();
+            });
+
+            return services;
+        }
     }
 }
