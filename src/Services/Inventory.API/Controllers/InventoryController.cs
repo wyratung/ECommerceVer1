@@ -1,4 +1,8 @@
-﻿namespace Inventory.API.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using System.Net;
+
+namespace Inventory.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

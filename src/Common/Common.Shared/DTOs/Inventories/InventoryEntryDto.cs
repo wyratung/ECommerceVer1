@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Shared.DTOs.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
